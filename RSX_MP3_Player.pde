@@ -54,6 +54,7 @@ ControlP5 gui;
 Textlabel SongTitle, SongArtist, SongAlbum, CurrentArtist;
 Slider VolSlider;
 Button UpBang, DownBang;
+Textlabel VolLabel;
 Textlabel TrackLabel_0, TrackLabel_1, TrackLabel_2, TrackLabel_3, TrackLabel_4;
 Textlabel TrackLabel_5, TrackLabel_6, TrackLabel_7, TrackLabel_8, TrackLabel_9;
 Bang TrackBang0, TrackBang1, TrackBang2, TrackBang3, TrackBang4;
@@ -152,8 +153,9 @@ void setup()
   //use integer as index to access path from Locations
   song = minim.loadFile(Location.get(Integer.parseInt(RandIndex.get(0).toString())).toString(), BUFFERSIZE);
   meta = song.getMetaData();
-  song.play();
-  song.setGain((Volume/2)-40);
+  //play and volume set at end of setup
+  //song.play();
+  //Volume(Volume);
   CurrentSong = meta.title();
   
   gui = new ControlP5(this);
@@ -396,14 +398,23 @@ void setup()
     ; 
     
   
-  VolSlider = gui.addSlider("Volume")
+  VolSlider = gui.addSlider("VolumeTouch")
      .setPosition(720,70)
      .setSize(40,440)
      .setRange(0,100)
      .setValue(Volume)
+     //.setNumberOfTickMarks(100)
+     .setSliderMode(Slider.FLEXIBLE)
      .setLabel("")
      ;
      
+  VolLabel = gui.addTextlabel("VolumeNumber")
+    .setPosition(728,73)
+    .setValue("" + Volume)
+    .setColor(255)
+    .setFont(SmallFont)
+    ;
+  
   gui.addTextlabel("volumeLabel")
      .setPosition(720,510)
      .setValue("VOL")
@@ -513,6 +524,11 @@ void setup()
     
   createTrackList(meta.author(), meta.title(), true);
   
+  //start song
+  song.play();
+  //set song volume
+  volume(Volume);
+  
 }
 
 
@@ -601,14 +617,18 @@ void keyPressed()  {
         nextSong();
       }
       if(keyCode == UP)  {
-        Volume += 1;
-        Volume(Volume);
-        VolSlider.setValue(Volume);
+        if(Volume < 100){
+          Volume += 1;
+          volume(Volume);
+          //VolSlider.setValue(Volume);
+        }
       }
       if(keyCode == DOWN)  {
-        Volume -= 1;
-        Volume(Volume);
-        VolSlider.setValue(Volume);
+        if(Volume > 0){
+          Volume -= 1;
+          volume(Volume);
+          //VolSlider.setValue(Volume);
+        }
       }
       if(key == ' ')  {
         playPause();
@@ -626,9 +646,20 @@ public void controlEvent(ControlEvent theEvent) {
  
 }
 
-void Volume(int value){
+void volume(int value){
   song.setGain((value/2)-40);
+  VolSlider.setValue(value);
+  VolLabel.setValue("" + value);
   //ensures volume varible gets set even when volume is changed from slider
+  Volume = value;
+  
+}
+
+//set volume from slider
+void VolumeTouch(){
+  int value = (int)VolSlider.getValue();
+  song.setGain((value/2)-40);
+  VolLabel.setValue("" + value);
   Volume = value;
 }
 
@@ -1292,7 +1323,8 @@ public void changeSong(int index)  {
   }
   
   //set volume of new song
-  song.setGain((VolSlider.getValue()/2)-40);
+  //song.setGain((VolSlider.getValue()/2)-40);
+  volume(Volume);
   
   //if old song was playing make new song play
   if(playing){
