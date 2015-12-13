@@ -1253,6 +1253,8 @@ public void nextSong() {
     SongNum = 0;
     Collections.shuffle(RandIndex);
   }
+  
+  delay(150);
 
   changeSong(SongNum);
   
@@ -1269,6 +1271,8 @@ public void lastSong() {
     SongNum = TotalSongs-1;
     Collections.shuffle(RandIndex);
   }
+  
+  delay(150);
   
   changeSong(SongNum);
   
