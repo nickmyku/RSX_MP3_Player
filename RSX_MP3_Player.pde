@@ -74,7 +74,7 @@ boolean Paused = false;
 boolean Randomized = true;
 int SongNum = 0;
 int ArtistNum = 0;
-int Volume = 50;
+int Volume = 20;
 int TotalSongs = 0;
 int TotalArtists = 0;
 int num = 0;
@@ -647,7 +647,8 @@ public void controlEvent(ControlEvent theEvent) {
 }
 
 void volume(int value){
-  song.setGain((value/2)-40);
+  //song.setGain((value/2)-40);
+  song.setGain((10*log(value))-40);
   VolSlider.setValue(value);
   VolLabel.setValue("" + value);
   //ensures volume varible gets set even when volume is changed from slider
@@ -658,7 +659,8 @@ void volume(int value){
 //set volume from slider
 void VolumeTouch(){
   int value = (int)VolSlider.getValue();
-  song.setGain((value/2)-40);
+  //song.setGain((value/2)-40);
+  song.setGain((10*log(value))-40);
   VolLabel.setValue("" + value);
   Volume = value;
 }
