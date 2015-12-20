@@ -648,7 +648,7 @@ public void controlEvent(ControlEvent theEvent) {
 
 void volume(int value){
   //song.setGain((value/2)-40);
-  song.setGain((10*log(value))-40);
+  song.setGain((10*log(value))-45);
   VolSlider.setValue(value);
   VolLabel.setValue("" + value);
   //ensures volume varible gets set even when volume is changed from slider
@@ -660,7 +660,7 @@ void volume(int value){
 void VolumeTouch(){
   int value = (int)VolSlider.getValue();
   //song.setGain((value/2)-40);
-  song.setGain((10*log(value))-40);
+  song.setGain((10*log(value))-45);
   VolLabel.setValue("" + value);
   Volume = value;
 }
