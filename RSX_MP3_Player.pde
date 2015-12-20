@@ -1300,11 +1300,17 @@ public void changeSong(int index)  {
     if(f.exists() && !f.isDirectory()) { 
       song = minim.loadFile(Location.get(Integer.parseInt(RandIndex.get(index).toString())).toString(), BUFFERSIZE);
     }
+    else{
+      return;
+    }
   }
   else  {
     File f = new File(Location.get(index).toString());
     if(f.exists() && !f.isDirectory()) { 
       song = minim.loadFile(Location.get(index).toString(), BUFFERSIZE);
+    }
+    else{
+      return;
     }
   }
   
