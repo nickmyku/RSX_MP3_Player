@@ -1296,10 +1296,16 @@ public void changeSong(int index)  {
   
   
   if(Random){
-    song = minim.loadFile(Location.get(Integer.parseInt(RandIndex.get(index).toString())).toString(), BUFFERSIZE);
+    File f = new File(Location.get(Integer.parseInt(RandIndex.get(index).toString())).toString());
+    if(f.exists() && !f.isDirectory()) { 
+      song = minim.loadFile(Location.get(Integer.parseInt(RandIndex.get(index).toString())).toString(), BUFFERSIZE);
+    }
   }
   else  {
-    song = minim.loadFile(Location.get(index).toString(), BUFFERSIZE);
+    File f = new File(Location.get(index).toString());
+    if(f.exists() && !f.isDirectory()) { 
+      song = minim.loadFile(Location.get(index).toString(), BUFFERSIZE);
+    }
   }
   
   meta = song.getMetaData();
