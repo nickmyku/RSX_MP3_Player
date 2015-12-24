@@ -646,24 +646,29 @@ public void controlEvent(ControlEvent theEvent) {
  
 }
 
-void volume(int value){
-  //song.setGain((value/2)-40);
-  song.setGain((10*log(value))-42);
+float volume(int value){
+  // logarithmic math to set song gain from linear volume
+  song.setGain((10*log(value))-40);
+  // ensures the volume slider displays integer value, also updates it from key set value
   VolSlider.setValue(value);
+  // displays the volume value on screen
   VolLabel.setValue("" + value);
   //ensures volume varible gets set even when volume is changed from slider
   Volume = value;
   
+  return value;
 }
 
 //set volume from slider
 void VolumeTouch(){
-  int value = (int)VolSlider.getValue();
-  //song.setGain((value/2)-40);
-  song.setGain((10*log(value))-42);
-  VolLabel.setValue("" + value);
-  Volume = value;
+  int value = volume((int)VolSlider.getValue())
+
+  //VolLabel.setValue("" + value);
+
+  //Volume = value;
 }
+
+
 
 public void playPause() {
   //println("the next song:");
@@ -1341,7 +1346,6 @@ public void changeSong(int index)  {
   }
   
   //set volume of new song
-  //song.setGain((VolSlider.getValue()/2)-40);
   volume(Volume);
   
   //if old song was playing make new song play
